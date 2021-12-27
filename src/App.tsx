@@ -1,19 +1,10 @@
 import "./styles.css";
-import useMinecraftTimer, { formatSecondsToTime } from "./useMinecraftTimer";
+import useMinecraftTimer, {
+  formatSecondsToTime
+} from "./hooks/useMinecraftTimer";
 import MinecraftTime from "./components/MinecraftTime";
 import MinecraftCoordinates from "./components/MinecraftCoordinates";
-
-// timer ✅
-
-// increment the number ✅
-
-// format the number to ms / s / m / hr / days / weeks / years ✅
-
-// convert normal time to mc time ✅
-
-// Buttons:
-//    - pause ✅
-//    - reset / sleep
+import MineCraftCropTimer from "./components/MineCraftCropTimer";
 
 export default function App() {
   const { timer, minecraftTimer, setDawn } = useMinecraftTimer();
@@ -25,6 +16,7 @@ export default function App() {
       <p>{JSON.stringify(formatSecondsToTime(minecraftTimer), null, 2)}</p>
       <button onClick={setDawn}>sleep</button>
       <MinecraftTime time={formatSecondsToTime(minecraftTimer)} />
+      <MineCraftCropTimer />
       <MinecraftCoordinates />
     </div>
   );

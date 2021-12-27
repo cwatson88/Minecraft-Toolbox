@@ -50,9 +50,6 @@ export default function useMinecraftTimer() {
   const [isPaused, setIsPaused] = useState(false);
 
   const setDawn = () => {
-    // setMinecraftTimer();
-    console.log(totalTime);
-    // setTotalTime(!totalTime ? totalTime + timer : totalTime + timer - 300000);
     setTotalTime(totalTime + timer);
     setStart(Date.now() - 300000);
   };
