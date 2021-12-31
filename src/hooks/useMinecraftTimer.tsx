@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function setTime(time: number, timeLimit: number, timeInSecs: number) {
+function setTimeUnit(time: number, timeLimit: number, timeInSecs: number) {
   const setUnit = ~~((time % timeLimit) / timeInSecs); //Bitwise operation "~~" is used the same way as Math.floor
   const zero = setUnit.toString().length;
   if (zero < 2) {
@@ -9,7 +9,11 @@ function setTime(time: number, timeLimit: number, timeInSecs: number) {
   return setUnit.toString();
 }
 
-export function formatSecondsToTime(time: number) {
+/**
+ *
+ * @param time milliseconds
+ */
+export function formatMillisecondsToTime(time: number) {
   const timeUnit = {
     seconds: 1,
     minutes: 60,
@@ -20,13 +24,13 @@ export function formatSecondsToTime(time: number) {
     years: 31556930
   };
 
-  const secs = setTime(time, timeUnit.minutes, timeUnit.seconds);
-  const mins = setTime(time, timeUnit.hours, timeUnit.minutes);
-  const hrs = setTime(time, timeUnit.days, timeUnit.hours);
-  const days = setTime(time, timeUnit.weeks, timeUnit.days);
-  const weeks = setTime(time, timeUnit.weeks, timeUnit.days);
-  const months = setTime(time, timeUnit.months, timeUnit.weeks);
-  const years = setTime(time, Infinity, timeUnit.years);
+  const secs = setTimeUnit(time, timeUnit.minutes, timeUnit.seconds);
+  const mins = setTimeUnit(time, timeUnit.hours, timeUnit.minutes);
+  const hrs = setTimeUnit(time, timeUnit.days, timeUnit.hours);
+  const days = setTimeUnit(time, timeUnit.weeks, timeUnit.days);
+  const weeks = setTimeUnit(time, timeUnit.weeks, timeUnit.days);
+  const months = setTimeUnit(time, timeUnit.months, timeUnit.weeks);
+  const years = setTimeUnit(time, Infinity, timeUnit.years);
 
   return {
     secs,
@@ -47,32 +51,21 @@ export default function useMinecraftTimer() {
   const [totalTime, setTotalTime] = useState(0);
   const [timer, setTimer] = useState(0); // time in ms
   const [minecraftTimer, setMinecraftTimer] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
   const setDawn = () => {
     setTotalTime(totalTime + timer);
     setStart(Date.now() - 300000);
   };
 
-  const pause = () => {
-    setIsPaused(true);
-  };
-
-  const resume = () => {
-    setIsPaused(false);
-  };
-
   useEffect(() => {
-    if (!isPaused) {
-      const timeout = setTimeout(() => {
-        setTimer((Date.now() - start) / 1000);
-      }, 100);
+    const timeout = setTimeout(() => {
+      setTimer((Date.now() - start) / 1000);
+    }, 100);
 
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [timer, isPaused, start]);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [timer, start]);
 
   useEffect(() => {
     setMinecraftTimer(mcTime(timer));
@@ -82,9 +75,6 @@ export default function useMinecraftTimer() {
     timer,
     setTimer,
     minecraftTimer,
-    isPaused,
-    pause,
-    resume,
     start,
     setDawn,
     totalTime

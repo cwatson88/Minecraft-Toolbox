@@ -11,5 +11,10 @@ export default function MineCraftCropTimer(): ReactElement {
   // useEffect(() => {
   //   console.log(timeRemaining);
   // });
-  return <div>{timeRemaining?.total}</div>;
+  return (
+    <div>
+      <h2>Crop Timer</h2>
+      {timeRemaining?.total}
+    </div>
+  );
 }

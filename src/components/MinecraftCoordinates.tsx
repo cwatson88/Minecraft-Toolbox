@@ -84,6 +84,7 @@ export default function MinecraftCoordinates(): ReactElement {
   const [activeCoords, setActiveCoords] = useState<null | Coords>(null);
   return (
     <div>
+      <h2>Co-ordinates</h2>
       {coords &&
         coords.map((coord) => (
           <p
